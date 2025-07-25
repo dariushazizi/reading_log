@@ -43,19 +43,18 @@
 <body class="bg-slate-100 text-slate-800">
 
     <!-- Main Container -->
-    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
 
         <!-- Header -->
         <header class="mb-8 text-center">
             <h1 class="text-4xl md:text-5xl font-bold text-slate-900">My Reading Log</h1>
-            <p class="text-slate-500 mt-2">Track your literary journey, one page at a time.</p>
+            <p class="text-slate-500 mt-2">Track your literary journey, one page and one minute at a time.</p>
         </header>
 
         <!-- Dashboard Section -->
         <section id="dashboard" class="mb-8">
             <h2 class="text-2xl font-semibold mb-4 text-slate-700 border-b pb-2">Dashboard</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Total Books Read -->
                 <div class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4">
                     <div class="bg-blue-100 p-3 rounded-full"><i class="fas fa-book text-blue-500 text-2xl"></i></div>
                     <div>
@@ -63,23 +62,20 @@
                         <p id="total-books-stat" class="text-2xl font-bold">0</p>
                     </div>
                 </div>
-                <!-- Pages Read Today -->
                 <div class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4">
                     <div class="bg-green-100 p-3 rounded-full"><i class="fas fa-file-lines text-green-500 text-2xl"></i></div>
-                    <div>
-                        <p class="text-slate-500 text-sm">Pages Today</p>
-                        <p id="pages-today-stat" class="text-2xl font-bold">0</p>
-                    </div>
-                </div>
-                 <!-- Total Pages Read -->
-                <div class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4">
-                    <div class="bg-yellow-100 p-3 rounded-full"><i class="fas fa-book-open text-yellow-500 text-2xl"></i></div>
                     <div>
                         <p class="text-slate-500 text-sm">Total Pages</p>
                         <p id="total-pages-stat" class="text-2xl font-bold">0</p>
                     </div>
                 </div>
-                <!-- Reading Streak -->
+                <div class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4">
+                    <div class="bg-orange-100 p-3 rounded-full"><i class="fas fa-clock text-orange-500 text-2xl"></i></div>
+                    <div>
+                        <p class="text-slate-500 text-sm">Total Time Read</p>
+                        <p id="total-time-stat" class="text-2xl font-bold">0h 0m</p>
+                    </div>
+                </div>
                 <div class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4">
                     <div class="bg-purple-100 p-3 rounded-full"><i class="fas fa-fire text-purple-500 text-2xl"></i></div>
                     <div>
@@ -93,15 +89,21 @@
         <!-- Analytical Reports Section -->
         <section id="reports" class="mb-8">
             <h2 class="text-2xl font-semibold mb-4 text-slate-700 border-b pb-2">Analytical Reports</h2>
-            <div id="charts-container" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div id="charts-container" class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
                 <div class="bg-white p-6 rounded-xl shadow-md">
                     <h3 class="text-lg font-semibold text-slate-700 mb-4">Pages Read Per Month</h3>
                     <div class="chart-container">
                         <canvas id="pages-per-month-chart"></canvas>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="text-lg font-semibold text-slate-700 mb-4">Book Reading Distribution</h3>
+                 <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="text-lg font-semibold text-slate-700 mb-4">Time Read Per Month (Minutes)</h3>
+                    <div class="chart-container">
+                        <canvas id="time-per-month-chart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-2 xl:col-span-1">
+                    <h3 class="text-lg font-semibold text-slate-700 mb-4">Time Distribution By Book</h3>
                     <div class="chart-container">
                         <canvas id="books-distribution-chart"></canvas>
                     </div>
@@ -112,37 +114,45 @@
 
         <!-- Main Content Area: Form and History -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            <!-- Left Column: Log New Reading -->
             <div class="lg:col-span-1">
                 <div class="bg-white p-6 rounded-xl shadow-md sticky top-8">
                     <h2 class="text-2xl font-semibold mb-4 text-slate-700">Log a Reading Session</h2>
                     <form id="reading-form" class="space-y-4">
                         <div>
                             <label for="book-title" class="block text-sm font-medium text-slate-600">Book Title</label>
-                            <input type="text" id="book-title" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., The Lean Startup" required>
+                            <input type="text" id="book-title" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                         </div>
                         <div>
                             <label for="author" class="block text-sm font-medium text-slate-600">Author</label>
-                            <input type="text" id="author" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., Eric Ries">
+                            <input type="text" id="author" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                         </div>
                          <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label for="start-page" class="block text-sm font-medium text-slate-600">Start Page</label>
-                                <input type="number" id="start-page" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" min="0" required>
+                                <input type="number" id="start-page" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm" min="0" required>
                             </div>
                             <div>
                                 <label for="end-page" class="block text-sm font-medium text-slate-600">End Page</label>
-                                <input type="number" id="end-page" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" min="0" required>
+                                <input type="number" id="end-page" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm" min="0" required>
                             </div>
                         </div>
                         <div>
                             <label for="reading-date" class="block text-sm font-medium text-slate-600">Date</label>
-                            <input type="date" id="reading-date" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                            <input type="date" id="reading-date" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm" required>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="start-time" class="block text-sm font-medium text-slate-600">Start Time</label>
+                                <input type="time" id="start-time" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm" required>
+                            </div>
+                            <div>
+                                <label for="end-time" class="block text-sm font-medium text-slate-600">End Time</label>
+                                <input type="time" id="end-time" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm" required>
+                            </div>
                         </div>
                         <div>
                             <label for="notes" class="block text-sm font-medium text-slate-600">Notes & Thoughts</label>
-                            <textarea id="notes" rows="4" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Any key takeaways or reflections..."></textarea>
+                            <textarea id="notes" rows="3" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
                         </div>
                         <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition-colors">
                             <i class="fas fa-save mr-2"></i>Save Reading
@@ -151,12 +161,16 @@
                 </div>
             </div>
 
-            <!-- Right Column: Reading History -->
             <div class="lg:col-span-2">
                 <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h2 class="text-2xl font-semibold mb-4 text-slate-700">Reading History</h2>
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-semibold text-slate-700">Reading History</h2>
+                         <div class="bg-slate-100 p-3 rounded-lg text-center">
+                            <p class="text-slate-500 text-sm font-medium">Today's Stats</p>
+                            <p id="today-stats" class="text-lg font-bold text-slate-800">0 Pages, 0m</p>
+                        </div>
+                    </div>
                     <div id="history-container" class="space-y-4">
-                        <!-- Log entries will be inserted here by JavaScript -->
                          <p id="no-logs-message" class="text-center text-slate-500 py-8">No reading sessions logged yet. Use the form to get started!</p>
                     </div>
                 </div>
@@ -186,30 +200,39 @@
             const noChartsMessage = document.getElementById('no-charts-message');
             const chartsContainer = document.getElementById('charts-container');
             
-            // Dashboard Stats Elements
+            // Dashboard Stats
             const totalBooksStat = document.getElementById('total-books-stat');
-            const pagesTodayStat = document.getElementById('pages-today-stat');
             const totalPagesStat = document.getElementById('total-pages-stat');
+            const totalTimeStat = document.getElementById('total-time-stat');
             const streakStat = document.getElementById('streak-stat');
+            const todayStats = document.getElementById('today-stats');
 
-            // Modal Elements
+            // Modal
             const deleteModal = document.getElementById('delete-modal');
             const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
             const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
             let logIdToDelete = null;
 
-            // Chart Elements and Instances
+            // Charts
             const pagesPerMonthCtx = document.getElementById('pages-per-month-chart').getContext('2d');
+            const timePerMonthCtx = document.getElementById('time-per-month-chart').getContext('2d');
             const booksDistributionCtx = document.getElementById('books-distribution-chart').getContext('2d');
-            let pagesPerMonthChart;
-            let booksDistributionChart;
+            let pagesPerMonthChart, timePerMonthChart, booksDistributionChart;
 
-            // Set default date to today
-            document.getElementById('reading-date').valueAsDate = new Date();
-
-            // --- DATA HANDLING ---
+            // --- UTILITY FUNCTIONS ---
             const getLogs = () => JSON.parse(localStorage.getItem('readingLogs')) || [];
             const saveLogs = (logs) => localStorage.setItem('readingLogs', JSON.stringify(logs));
+            const formatMinutes = (mins) => {
+                const h = Math.floor(mins / 60);
+                const m = mins % 60;
+                return `${h}h ${m}m`;
+            };
+
+            // Set default date and time
+            const now = new Date();
+            document.getElementById('reading-date').valueAsDate = now;
+            document.getElementById('start-time').value = now.toTimeString().slice(0, 5);
+            document.getElementById('end-time').value = now.toTimeString().slice(0, 5);
 
             // --- UI RENDERING ---
             const renderLogEntry = (log) => {
@@ -222,11 +245,15 @@
                     <div class="flex-grow">
                         <p class="font-bold text-lg text-slate-800">${log.bookTitle}</p>
                         <p class="text-sm text-slate-500">by ${log.author || 'Unknown Author'}</p>
-                        <p class="text-sm text-slate-600 mt-2">Read pages ${log.startPage} to ${log.endPage} (${pagesRead} pages)</p>
-                        ${log.notes ? `<p class="text-sm text-slate-600 mt-1 bg-slate-100 p-2 rounded-md"><em>${log.notes}</em></p>` : ''}
+                        <div class="text-sm text-slate-600 mt-2 flex flex-wrap gap-x-4 gap-y-1">
+                           <span><i class="fas fa-file-lines mr-1 text-green-500"></i> ${pagesRead} pages</span>
+                           <span><i class="fas fa-clock mr-1 text-orange-500"></i> ${log.duration} min</span>
+                        </div>
+                        ${log.notes ? `<p class="text-sm text-slate-600 mt-2 bg-slate-100 p-2 rounded-md"><em>${log.notes}</em></p>` : ''}
                     </div>
                     <div class="text-sm text-slate-500 mt-3 sm:mt-0 sm:text-right flex-shrink-0">
                         <p>${new Date(log.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                        <p class="text-xs">${log.startTime} - ${log.endTime}</p>
                         <button class="delete-btn text-red-500 hover:text-red-700 mt-2 transition-colors" data-id="${log.id}">
                             <i class="fas fa-trash-alt mr-1"></i>Delete
                         </button>
@@ -248,30 +275,28 @@
                     noLogsMessage.style.display = 'none';
                     chartsContainer.classList.remove('hidden');
                     noChartsMessage.classList.add('hidden');
-                    logs.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    logs.sort((a, b) => new Date(b.date + 'T' + b.startTime) - new Date(a.date + 'T' + a.startTime));
                     logs.forEach(log => historyContainer.appendChild(renderLogEntry(log)));
                 }
                 updateDashboard();
                 updateCharts();
             };
 
-            // --- DASHBOARD LOGIC ---
+            // --- DASHBOARD & CHARTS LOGIC ---
             const updateDashboard = () => {
                 const logs = getLogs();
                 
+                // Stats calculation
                 const uniqueBooks = new Set(logs.map(log => log.bookTitle.toLowerCase().trim()));
-                totalBooksStat.textContent = uniqueBooks.size;
-
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const pagesToday = logs
-                    .filter(log => new Date(log.date).setHours(0, 0, 0, 0) === today.getTime())
-                    .reduce((sum, log) => sum + (log.endPage - log.startPage), 0);
-                pagesTodayStat.textContent = pagesToday;
-
                 const totalPages = logs.reduce((sum, log) => sum + (log.endPage - log.startPage), 0);
-                totalPagesStat.textContent = totalPages;
+                const totalMinutes = logs.reduce((sum, log) => sum + log.duration, 0);
 
+                const today = new Date().toISOString().slice(0,10);
+                const todayLogs = logs.filter(log => log.date === today);
+                const pagesToday = todayLogs.reduce((sum, log) => sum + (log.endPage - log.startPage), 0);
+                const timeToday = todayLogs.reduce((sum, log) => sum + log.duration, 0);
+
+                // Streak calculation
                 const readingDates = [...new Set(logs.map(log => new Date(log.date).setHours(0,0,0,0)))].sort((a, b) => b - a);
                 let streak = 0;
                 if (readingDates.length > 0) {
@@ -285,72 +310,55 @@
                         }
                     }
                 }
+
+                // Update DOM
+                totalBooksStat.textContent = uniqueBooks.size;
+                totalPagesStat.textContent = totalPages;
+                totalTimeStat.textContent = formatMinutes(totalMinutes);
                 streakStat.textContent = `${streak} Day${streak !== 1 ? 's' : ''}`;
+                todayStats.textContent = `${pagesToday} Pages, ${timeToday}m`;
             };
 
-            // --- CHART LOGIC ---
             const updateCharts = () => {
                 const logs = getLogs();
-
-                // Destroy existing charts to prevent duplicates
                 if (pagesPerMonthChart) pagesPerMonthChart.destroy();
+                if (timePerMonthChart) timePerMonthChart.destroy();
                 if (booksDistributionChart) booksDistributionChart.destroy();
-
                 if (logs.length === 0) return;
 
-                // 1. Pages Per Month Chart
                 const monthlyData = {};
                 logs.forEach(log => {
-                    const month = new Date(log.date).toISOString().slice(0, 7); // YYYY-MM
-                    const pages = log.endPage - log.startPage;
-                    monthlyData[month] = (monthlyData[month] || 0) + pages;
+                    const month = log.date.slice(0, 7); // YYYY-MM
+                    if (!monthlyData[month]) monthlyData[month] = { pages: 0, duration: 0 };
+                    monthlyData[month].pages += (log.endPage - log.startPage);
+                    monthlyData[month].duration += log.duration;
                 });
                 
                 const sortedMonths = Object.keys(monthlyData).sort();
-                const monthLabels = sortedMonths.map(month => new Date(month + '-02').toLocaleString('default', { month: 'short', year: '2-digit' }));
-                const monthPageData = sortedMonths.map(month => monthlyData[month]);
-
+                const monthLabels = sortedMonths.map(m => new Date(m + '-02').toLocaleString('default', { month: 'short', year: '2-digit' }));
+                
+                // Pages Per Month Chart
                 pagesPerMonthChart = new Chart(pagesPerMonthCtx, {
                     type: 'bar',
-                    data: {
-                        labels: monthLabels,
-                        datasets: [{
-                            label: 'Pages Read',
-                            data: monthPageData,
-                            backgroundColor: 'rgba(59, 130, 246, 0.5)',
-                            borderColor: 'rgba(59, 130, 246, 1)',
-                            borderWidth: 1
-                        }]
-                    },
+                    data: { labels: monthLabels, datasets: [{ label: 'Pages Read', data: sortedMonths.map(m => monthlyData[m].pages), backgroundColor: 'rgba(59, 130, 246, 0.5)', borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 1 }] },
                     options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
                 });
 
-                // 2. Books Distribution Chart
-                const bookData = {};
-                logs.forEach(log => {
-                    const title = log.bookTitle;
-                    const pages = log.endPage - log.startPage;
-                    bookData[title] = (bookData[title] || 0) + pages;
+                // Time Per Month Chart
+                timePerMonthChart = new Chart(timePerMonthCtx, {
+                    type: 'bar',
+                    data: { labels: monthLabels, datasets: [{ label: 'Minutes Read', data: sortedMonths.map(m => monthlyData[m].duration), backgroundColor: 'rgba(249, 115, 22, 0.5)', borderColor: 'rgba(249, 115, 22, 1)', borderWidth: 1 }] },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
                 });
 
-                const bookLabels = Object.keys(bookData);
-                const bookPageData = Object.values(bookData);
-                
+                // Book Distribution Chart (by time)
+                const bookData = {};
+                logs.forEach(log => {
+                    bookData[log.bookTitle] = (bookData[log.bookTitle] || 0) + log.duration;
+                });
                 booksDistributionChart = new Chart(booksDistributionCtx, {
                     type: 'doughnut',
-                    data: {
-                        labels: bookLabels,
-                        datasets: [{
-                            label: 'Pages per Book',
-                            data: bookPageData,
-                            backgroundColor: [
-                                'rgba(255, 99, 132, 0.7)', 'rgba(54, 162, 235, 0.7)', 'rgba(255, 206, 86, 0.7)',
-                                'rgba(75, 192, 192, 0.7)', 'rgba(153, 102, 255, 0.7)', 'rgba(255, 159, 64, 0.7)'
-                            ],
-                            borderColor: '#fff',
-                            borderWidth: 2
-                        }]
-                    },
+                    data: { labels: Object.keys(bookData), datasets: [{ label: 'Time per Book (min)', data: Object.values(bookData), backgroundColor: ['rgba(239, 68, 68, 0.7)', 'rgba(59, 130, 246, 0.7)', 'rgba(245, 158, 11, 0.7)', 'rgba(16, 185, 129, 0.7)', 'rgba(139, 92, 246, 0.7)', 'rgba(217, 70, 239, 0.7)'], borderColor: '#fff', borderWidth: 2 }] },
                     options: { responsive: true, maintainAspectRatio: false }
                 });
             };
@@ -359,22 +367,29 @@
             readingForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 
+                const date = document.getElementById('reading-date').value;
+                const startTime = document.getElementById('start-time').value;
+                const endTime = document.getElementById('end-time').value;
                 const startPage = parseInt(document.getElementById('start-page').value);
                 const endPage = parseInt(document.getElementById('end-page').value);
 
-                if (endPage <= startPage) {
-                    // Using a custom modal or inline message would be better, but alert is simple for now.
-                    alert('End page must be greater than the start page.');
-                    return;
+                const startDateTime = new Date(`${date}T${startTime}`);
+                const endDateTime = new Date(`${date}T${endTime}`);
+                
+                if (endDateTime <= startDateTime) {
+                    alert('End time must be after the start time.'); return;
                 }
+                if (endPage <= startPage) {
+                    alert('End page must be greater than the start page.'); return;
+                }
+
+                const duration = Math.round((endDateTime - startDateTime) / 60000); // duration in minutes
 
                 const newLog = {
                     id: Date.now(),
                     bookTitle: document.getElementById('book-title').value.trim(),
                     author: document.getElementById('author').value.trim(),
-                    startPage: startPage,
-                    endPage: endPage,
-                    date: document.getElementById('reading-date').value,
+                    startPage, endPage, date, startTime, endTime, duration,
                     notes: document.getElementById('notes').value.trim(),
                 };
 
@@ -384,7 +399,10 @@
 
                 renderAllLogs();
                 readingForm.reset();
-                document.getElementById('reading-date').valueAsDate = new Date();
+                const now = new Date();
+                document.getElementById('reading-date').valueAsDate = now;
+                document.getElementById('start-time').value = now.toTimeString().slice(0, 5);
+                document.getElementById('end-time').value = now.toTimeString().slice(0, 5);
             });
 
             historyContainer.addEventListener('click', (e) => {
